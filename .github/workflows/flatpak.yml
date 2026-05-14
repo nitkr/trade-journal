@@ -16,10 +16,10 @@ concurrency:
 
 jobs:
   build-and-deploy:
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Source Code
@@ -32,7 +32,7 @@ jobs:
           cache: 'npm'
 
       - name: Install Node Dependencies
-        run: npm ci
+        run: npm install --no-audit --no-fund --prefer-offline
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
 
