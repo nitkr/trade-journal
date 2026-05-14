@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light theme - Clean and professional */
+:root {
+  --background: 0 0% 98%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 14% 96%;
+  --secondary-foreground: 220 9% 18%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 9% 46%;
+  --accent: 220 14% 96%;
+  --accent-foreground: 220 9% 18%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 221 83% 53%;
+  --radius: 0.5rem;
+
+  /* Chart colors for light theme - WCAG AA compliant */
+  --chart-green: 142 71% 45%;
+  --chart-red: 0 72% 51%;
+  --chart-green-fill: 142 71% 45%;
+  --chart-red-fill: 0 72% 51%;
+  --chart-blue: 217 91% 60%;
+  --chart-orange: 25 95% 53%;
+  --chart-purple: 262 83% 58%;
+  --chart-teal: 174 94% 31%;
+  --chart-grid: 220 13% 87%;
+  --chart-text: 222 47% 28%;
+}
+
+/* Dark theme - Deep slates/greys with vibrant accents for WCAG AA compliance */
+.dark {
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+  --card: 217 33% 10%;
+  --card-foreground: 213 31% 91%;
+  --popover: 217 33% 10%;
+  --popover-foreground: 213 31% 91%;
+  --primary: 217 91% 67%;
+  --primary-foreground: 224 71% 4%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 213 31% 91%;
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 33% 17%;
+  --accent-foreground: 213 31% 91%;
+  --destructive: 0 63% 50%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 217 33% 18%;
+  --input: 217 33% 18%;
+  --ring: 217 91% 67%;
+
+  /* Chart colors for dark theme - High contrast vibrant colors on dark background */
+  --chart-green: 142 76% 50%;
+  --chart-red: 0 86% 62%;
+  --chart-green-fill: 142 76% 50%;
+  --chart-red-fill: 0 86% 62%;
+  --chart-blue: 217 91% 67%;
+  --chart-orange: 27 96% 61%;
+  --chart-purple: 262 83% 71%;
+  --chart-teal: 174 94% 51%;
+  --chart-grid: 217 33% 22%;
+  --chart-text: 213 31% 91%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+/* Smooth theme transitions */
+*,
+*::before,
+*::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Charts container transitions for smooth theme switching */
+.recharts-wrapper,
+.recharts-surface {
+  transition: all 0.2s ease;
+}
+
+/* Tooltip styling for dark theme */
+.recharts-tooltip-wrapper {
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.dark .recharts-tooltip-wrapper {
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+/* Custom scrollbar for dark theme */
+.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}

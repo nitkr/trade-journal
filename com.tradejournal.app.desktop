@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Trade Journal
+Exec=trade-journal %U
+Terminal=false
+Type=Application
+Icon=com.tradejournal.app
+StartupWMClass=Trade Journal
+Comment=Your personal, powerful, local-first trading companion for NSE & beyond
+Categories=Finance;

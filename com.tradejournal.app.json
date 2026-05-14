@@ -1,0 +1,67 @@
+{
+  "app-id": "com.tradejournal.app",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "23.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "trade-journal",
+  "separate-locales": false,
+  "finish-args": [
+    "--share=ipc",
+    "--socket=x11",
+    "--socket=wayland",
+    "--socket=pulseaudio",
+    "--socket=session-bus",
+    "--share=network",
+    "--device=dri",
+    "--filesystem=home",
+    "--filesystem=/app/lib/trade-journal",
+    "--talk-name=org.freedesktop.Notifications",
+    "--talk-name=org.freedesktop.SystemProperties",
+    "--talk-name=org.freedesktop.seat",
+    "--talk-name=org.freedesktop.login1",
+    "--env=ELECTRON_RUN_AS_NODE=",
+    "--env=ELECTRON_DISABLE_SANDBOX=1"
+  ],
+  "modules": [
+    {
+      "name": "trade-journal",
+      "buildsystem": "simple",
+      "build-commands": [
+        "install -Dm755 trade-journal /app/lib/trade-journal/trade-journal",
+        "install -Dm644 resources.pak /app/lib/trade-journal/resources.pak",
+        "install -Dm644 icudtl.dat /app/lib/trade-journal/icudtl.dat",
+        "install -Dm644 chrome_100_percent.pak /app/lib/trade-journal/chrome_100_percent.pak",
+        "install -Dm644 chrome_200_percent.pak /app/lib/trade-journal/chrome_200_percent.pak",
+        "install -Dm644 v8_context_snapshot.bin /app/lib/trade-journal/v8_context_snapshot.bin",
+        "install -Dm644 snapshot_blob.bin /app/lib/trade-journal/snapshot_blob.bin",
+        "cp -r locales /app/lib/trade-journal/",
+        "cp -r resources /app/lib/trade-journal/",
+        "cp *.so /app/lib/trade-journal/",
+        "cp *.so.* /app/lib/trade-journal/",
+        "install -Dm755 trade-journal.sh /app/bin/trade-journal",
+        "install -Dm644 com.tradejournal.app.desktop /app/share/applications/com.tradejournal.app.desktop",
+        "install -Dm644 usr/share/icons/hicolor/256x256/apps/trade-journal.png /app/share/icons/hicolor/256x256/apps/com.tradejournal.app.png"
+      ],
+      "sources": [
+        {
+          "type": "file",
+          "path": "com.tradejournal.app.desktop"
+        },
+        {
+          "type": "script",
+          "dest-filename": "trade-journal.sh",
+          "commands": [
+            "export LD_LIBRARY_PATH=/app/lib/trade-journal:$LD_LIBRARY_PATH",
+            "export ELECTRON_DISABLE_SANDBOX=1",
+            "export ELECTRON_NO_ATTACH_CONSOLE=1",
+            "exec /app/lib/trade-journal/trade-journal --disable-gpu --disable-software-rasterizer --no-sandbox --disable-gpu-compositing --disable-accelerated-2d-canvas --disable-accelerated-video-decode --in-process-gpu \"$@\""
+          ]
+        },
+        {
+          "type": "archive",
+          "path": "squashfs-root.tar.gz"
+        }
+      ]
+    }
+  ]
+}
