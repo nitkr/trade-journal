@@ -33,9 +33,13 @@ jobs:
 
       - name: Install Node Dependencies
         run: npm ci
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
 
       - name: Build Electron App
         run: npm run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
 
       - name: Install Flatpak & flatpak-builder
         run: |
