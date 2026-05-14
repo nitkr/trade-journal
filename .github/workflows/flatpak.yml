@@ -1,0 +1,74 @@
+name: Build and Deploy Flatpak to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Node Dependencies
+        run: npm ci
+
+      - name: Build Electron App
+        run: npm run build
+
+      - name: Install Flatpak & flatpak-builder
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder
+
+      - name: Add Freedesktop Runtimes
+        run: |
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+          flatpak install --user -y flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08 || true
+          flatpak install --user -y flathub org.electronjs.Electron2.BaseApp//23.08 || true
+
+      - name: Prepare Flatpak Build Directory
+        run: |
+          mkdir -p squashfs-root
+          cp -r release/linux-unpacked/* squashfs-root/
+
+      - name: Create squashfs-root.tar.gz
+        run: tar -czf squashfs-root.tar.gz squashfs-root
+
+      - name: Build OSTree Repository
+        run: |
+          mkdir -p repo
+          flatpak-builder --user --force-clean --repo=repo build-dir com.tradejournal.app.json
+
+      - name: Generate Repository Summary
+        run: flatpak build-update-repo repo
+
+      - name: Upload Repository as Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./repo
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
